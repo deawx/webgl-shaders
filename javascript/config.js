@@ -4,12 +4,15 @@ import setLocationHash from 'javascript/utility/setLocationHash'
 import assign from 'lodash/assign'
 
 const DEFAULT_CONFIG = {
-  x_min: -2.0,
-  x_max:  2.0,
-  y_min: -1.25,
-  y_max:  1.25,
+  x_min: -100.0,
+  x_max:  100.0,
+  y_min: -100,
+  y_max:  100,
 
-  brightness: 4.0,
+  angle1: Math.PI / 2,
+  angle2: Math.PI / 2,
+
+  brightness: 400.0,
   colorset: 0,
   fractal: 0,
   exponent: 2,

@@ -9,7 +9,8 @@ import getUniformLocation from 'javascript/utility/getUniformLocation'
 
 /* shaders */
 import vertexShaderSource from 'shaders/vertexShader.glsl'
-import shaderSource from 'shaders/fractal.glsl'
+// import shaderSource from 'shaders/fractal.glsl'
+import shaderSource from 'shaders/collatz.glsl'
 
 /* libraries */
 import HashSubscriber from 'hash-subscriber'
@@ -53,8 +54,8 @@ inputs.forEach(slider => {
   slider.addEventListener('input', inputEventHandler.bind(null, slider))
 })
 
-let brightness, colorset, exponent, fractal, speed, supersamples, x_min, x_max, y_min, y_max
-HashSubscriber.subscribe(['brightness', 'colorset', 'fractal', 'exponent', 'speed', 'supersamples', 'x_min', 'x_max', 'y_min', 'y_max'], setConfigValues)
+let angle1, angle2, brightness, colorset, exponent, fractal, speed, supersamples, x_min, x_max, y_min, y_max
+HashSubscriber.subscribe(['angle1', 'angle2', 'brightness', 'colorset', 'fractal', 'exponent', 'speed', 'supersamples', 'x_min', 'x_max', 'y_min', 'y_max'], setConfigValues)
 
 function setConfigValues() {
   const config = Config.getConfig()
@@ -69,6 +70,8 @@ function setConfigValues() {
     y: {min: y_min, max: y_max}
   })
 
+  angle1 = config.angle1
+  angle2 = config.angle2
   brightness = config.brightness
   colorset = config.colorset
   exponent = config.exponent
@@ -157,7 +160,7 @@ context.vertexAttribPointer(positionHandle,
 
 let time = Date.now()
 function drawFrame() {
-  const dataToSendToGPU = new Float32Array(14)
+  const dataToSendToGPU = new Float32Array(16)
 
   time += speed
 
@@ -175,6 +178,8 @@ function drawFrame() {
   dataToSendToGPU[11] = fractal
   dataToSendToGPU[12] = time
   dataToSendToGPU[13] = exponent
+  dataToSendToGPU[14] = angle1
+  dataToSendToGPU[15] = angle2
 
   const dataPointer = getUniformLocation(program, 'data', context)
   context.uniform1fv(dataPointer, dataToSendToGPU)
